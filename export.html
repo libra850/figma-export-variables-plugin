@@ -1,0 +1,91 @@
+<style>
+  :root {
+    --spacing: 0.8rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: var(--spacing);
+    background: #ffffff; /* 透明背景色 */
+    -webkit-box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 影 */
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* 影 */
+    -webkit-backdrop-filter: blur(5px); /* ぼかし */
+    backdrop-filter: blur(5px); /* ぼかし */
+  }
+
+  html,
+  body,
+  main {
+    height: 100%;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing);
+  }
+
+  button {
+    color: #090909;
+    padding: 0.7em 1.7em;
+    font-size: 18px;
+    border-radius: 0.5em;
+    background: #e8e8e8;
+    cursor: pointer;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s;
+    box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  }
+
+  button:hover {
+    color: #00A88F
+  }
+
+  button:active {
+    color: #00A88F;
+    box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+  }
+
+
+  textarea {
+    background-color: var(--figma-color-bg-secondary);
+    border: 2px solid var(--figma-color-border);
+    color: var(--figma-color-text-secondary);
+    flex: 1;
+    font-family: Andale Mono, monospace;
+    font-size: 0.9rem;
+    overflow: auto;
+    padding: var(--spacing);
+    white-space: pre;
+  }
+  textarea:focus {
+    border-color: #00A88F;
+    outline: none;
+  }
+
+
+  textarea {
+    display: block;
+    width: 100%;
+  }
+
+</style>
+<main>
+  <button id="export" type="button">Export Variables</button>
+  <textarea
+    placeholder="設定されているすべてのvariablesがjson形式で出力されます"
+    readonly
+  ></textarea>
+</main>
+<script>
+  window.onmessage = ({ data: { pluginMessage } }) => {
+    document.querySelector("textarea").innerHTML = JSON.stringify(pluginMessage.mergedBody, null, 2);
+  };
+  document.getElementById("export").addEventListener("click", () => {
+    parent.postMessage({ pluginMessage: { type: "EXPORT" } }, "*");
+  });
+</script>
